@@ -1,0 +1,116 @@
+<UserControl x:Class="WPFMVVMDemo.Views.PersonView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFMVVMDemo.Views"
+             xmlns:vm="clr-namespace:WPFMVVMDemo.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,5,10,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Padding" Value="5,3"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,5,10,5"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="MinWidth" Value="80"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 标题 -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                       Text="人员信息" FontSize="20" FontWeight="Bold"
+                       Margin="0,0,0,20"/>
+
+            <!-- 信息显示/编辑区域 -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="姓氏:"/>
+            <TextBox Grid.Row="1" Grid.Column="1" 
+                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding IsEditMode}"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="名字:"/>
+            <TextBox Grid.Row="2" Grid.Column="1" 
+                     Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding IsEditMode}"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="年龄:"/>
+            <TextBox Grid.Row="3" Grid.Column="1" 
+                     Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding IsEditMode}"/>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="电子邮箱:"/>
+            <TextBox Grid.Row="4" Grid.Column="1" 
+                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding IsEditMode}"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="手机号码:"/>
+            <TextBox Grid.Row="5" Grid.Column="1" 
+                     Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                     IsEnabled="{Binding IsEditMode}"/>
+
+            <!-- 命令按钮区域 -->
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="0,15,0,0">
+                <!-- 编辑模式下不可见 -->
+                <Button Content="编辑" Command="{Binding EditCommand}" 
+                        Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisConverter}, ConverterParameter=Inverse}"/>
+                
+                <!-- 编辑模式下可见 -->
+                <StackPanel Orientation="Horizontal" 
+                            Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisConverter}}">
+                    <Button Content="保存" Command="{Binding SaveCommand}"/>
+                    <Button Content="重置" Command="{Binding ResetCommand}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- 信息预览 -->
+            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+                    BorderBrush="LightGray" BorderThickness="1" Margin="0,20,0,0"
+                    Padding="15">
+                <StackPanel>
+                    <TextBlock Text="个人信息预览：" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <TextBlock>
+                        <Run Text="全名: "/>
+                        <Run Text="{Binding FullName, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBlock>
+                        <Run Text="年龄: "/>
+                        <Run Text="{Binding Age, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBlock>
+                        <Run Text="电子邮箱: "/>
+                        <Run Text="{Binding Email, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBlock>
+                        <Run Text="手机号码: "/>
+                        <Run Text="{Binding PhoneNumber, Mode=OneWay}" FontWeight="Bold"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl> 
