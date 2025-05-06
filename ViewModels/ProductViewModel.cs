@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WPFMVVMDemo.Common;
 using WPFMVVMDemo.Models;
@@ -38,11 +39,11 @@ namespace WPFMVVMDemo.ViewModels
             LoadFromModel();
             
             // 初始化命令
-            SaveCommand = new RelayCommand(ExecuteSave, CanExecuteSave);
-            UpdateAllCommand = new RelayCommand(ExecuteUpdateAll);
-            ResetCommand = new RelayCommand(ExecuteReset);
-            BatchUpdateCommand = new RelayCommand(ExecuteBatchUpdate);
-            DelayUpdateCommand = new RelayCommand(ExecuteDelayUpdate);
+            SaveCommand = new RelayCommand(async p => await ExecuteSaveAsync(), CanExecuteSave);
+            UpdateAllCommand = new RelayCommand(async p => await ExecuteUpdateAllAsync());
+            ResetCommand = new RelayCommand(async p => await ExecuteResetAsync());
+            BatchUpdateCommand = new RelayCommand(async p => await ExecuteBatchUpdateAsync());
+            DelayUpdateCommand = new RelayCommand(async p => await ExecuteDelayUpdateAsync());
         }
         #endregion
 
@@ -287,7 +288,7 @@ namespace WPFMVVMDemo.ViewModels
         /// <summary>
         /// 执行保存命令
         /// </summary>
-        private void ExecuteSave(object parameter)
+        private async Task ExecuteSaveAsync()
         {
             try
             {
@@ -295,7 +296,7 @@ namespace WPFMVVMDemo.ViewModels
                 UpdateStatusMessage("正在保存...");
                 
                 // 模拟操作延迟
-                System.Threading.Thread.Sleep(500);
+                await Task.Delay(1500);
                 
                 SaveToModel();
                 UpdateStatusMessage("保存成功！");
@@ -313,21 +314,42 @@ namespace WPFMVVMDemo.ViewModels
         /// <summary>
         /// 执行更新所有属性命令（使用空字符串通知所有属性变化）
         /// </summary>
-        private void ExecuteUpdateAll(object parameter)
+        private async Task ExecuteUpdateAllAsync()
         {
-            UpdateStatusMessage("正在更新所有属性...");
-            OnAllPropertiesChanged();
-            UpdateStatusMessage("所有属性已更新！");
+            try
+            {
+                IsBusy = true;
+                UpdateStatusMessage("正在更新所有属性...");
+                
+                // 模拟操作延迟
+                await Task.Delay(800);
+                
+                OnAllPropertiesChanged();
+                UpdateStatusMessage("所有属性已更新！");
+            }
+            catch (Exception ex)
+            {
+                UpdateStatusMessage($"更新失败: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         /// <summary>
         /// 执行重置命令
         /// </summary>
-        private void ExecuteReset(object parameter)
+        private async Task ExecuteResetAsync()
         {
             try
             {
+                IsBusy = true;
                 UpdateStatusMessage("正在重置...");
+                
+                // 模拟操作延迟
+                await Task.Delay(1000);
+                
                 LoadFromModel();
                 UpdateStatusMessage("已重置为原始数据！");
             }
@@ -335,16 +357,24 @@ namespace WPFMVVMDemo.ViewModels
             {
                 UpdateStatusMessage($"重置失败: {ex.Message}");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         /// <summary>
         /// 执行批量更新命令（演示批量更新模式）
         /// </summary>
-        private void ExecuteBatchUpdate(object parameter)
+        private async Task ExecuteBatchUpdateAsync()
         {
             try
             {
+                IsBusy = true;
                 UpdateStatusMessage("开始批量更新...");
+                
+                // 模拟操作延迟
+                await Task.Delay(1000);
                 
                 // 使用批量更新模式进行多个属性更新
                 UsingBatchMode(() =>
@@ -364,22 +394,27 @@ namespace WPFMVVMDemo.ViewModels
             {
                 UpdateStatusMessage($"批量更新失败: {ex.Message}");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         /// <summary>
         /// 执行延迟更新命令（演示延迟通知）
         /// </summary>
-        private void ExecuteDelayUpdate(object parameter)
+        private async Task ExecuteDelayUpdateAsync()
         {
             try
             {
+                IsBusy = true;
                 UpdateStatusMessage("开始延迟更新 (查看描述字段变化)...");
                 
                 // 模拟多次快速更新同一属性，但只会在最后一次触发通知
                 for (int i = 1; i <= 5; i++)
                 {
                     Description = $"更新中... ({i}/5)";
-                    System.Threading.Thread.Sleep(100);  // 模拟快速连续更新
+                    await Task.Delay(200);  // 模拟快速连续更新
                 }
                 
                 Description = $"更新于 {DateTime.Now:HH:mm:ss}";
@@ -388,6 +423,10 @@ namespace WPFMVVMDemo.ViewModels
             catch (Exception ex)
             {
                 UpdateStatusMessage($"延迟更新失败: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
         #endregion

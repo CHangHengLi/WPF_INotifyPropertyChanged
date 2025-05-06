@@ -1,146 +1,211 @@
-<UserControl x:Class="WPFMVVMDemo.Views.ProductView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPFMVVMDemo.Views"
-             xmlns:vm="clr-namespace:WPFMVVMDemo.ViewModels"
-             xmlns:common="clr-namespace:WPFMVVMDemo.Common"
-             mc:Ignorable="d" 
-             d:DesignHeight="550" d:DesignWidth="800">
-    
+<UserControl
+    x:Class="WPFMVVMDemo.Views.ProductView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="clr-namespace:WPFMVVMDemo.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WPFMVVMDemo.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:WPFMVVMDemo.ViewModels"
+    d:DesignHeight="550"
+    d:DesignWidth="800"
+    Background="Aquamarine"
+    mc:Ignorable="d">
+
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <common:DecimalConverter x:Key="DecimalConverter"/>
-        <common:IntConverter x:Key="IntConverter"/>
-        
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <common:DecimalConverter x:Key="DecimalConverter" />
+        <common:IntConverter x:Key="IntConverter" />
+
         <Style TargetType="TextBlock">
-            <Setter Property="Margin" Value="0,5,10,5"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,10,5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,5"/>
-            <Setter Property="Padding" Value="5,3"/>
+            <Setter Property="Margin" Value="0,5" />
+            <Setter Property="Padding" Value="5,3" />
         </Style>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Padding" Value="15,5"/>
-            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="15,5" />
+            <Setter Property="MinWidth" Value="120" />
         </Style>
-        
-        <!-- 简化后的验证模板 -->
+
+        <!--  简化后的验证模板  -->
         <ControlTemplate x:Key="ValidationTemplate">
             <StackPanel>
                 <Border BorderBrush="Red" BorderThickness="1">
                     <AdornedElementPlaceholder />
                 </Border>
-                <TextBlock Foreground="Red" FontSize="11" Margin="2,3,0,0"
-                           Text="{Binding Path=/ErrorContent}" />
+                <TextBlock
+                    Margin="2,3,0,0"
+                    FontSize="11"
+                    Foreground="Red"
+                    Text="{Binding Path=/ErrorContent}" />
             </StackPanel>
         </ControlTemplate>
     </UserControl.Resources>
-    
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <Grid Margin="20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- 标题 -->
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                       Text="高级 INotifyPropertyChanged 示例" FontSize="20" FontWeight="Bold"
-                       Margin="0,0,0,20"/>
+            <!--  标题  -->
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,20"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="高级 INotifyPropertyChanged 示例" />
 
-            <!-- 产品信息编辑区域 -->
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="产品名称:"/>
-            <TextBox Grid.Row="1" Grid.Column="1" 
-                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+            <!--  产品信息编辑区域  -->
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="产品名称:" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="产品价格:"/>
-            <!-- 使用自定义转换器和验证规则的价格输入框 -->
-            <TextBox Grid.Row="2" Grid.Column="1"
-                     Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-                     ToolTip="请输入有效的价格数值（大于等于0）">
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="产品价格:" />
+            <!--  使用自定义转换器和验证规则的价格输入框  -->
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="1"
+                ToolTip="请输入有效的价格数值（大于等于0）"
+                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
                 <TextBox.Text>
-                    <Binding Path="Price" 
-                             UpdateSourceTrigger="LostFocus"
-                             Converter="{StaticResource DecimalConverter}">
+                    <Binding
+                        Converter="{StaticResource DecimalConverter}"
+                        Path="Price"
+                        UpdateSourceTrigger="LostFocus">
                         <Binding.ValidationRules>
-                            <common:NumericValidationRule Minimum="0" AllowDecimal="True"/>
+                            <common:NumericValidationRule AllowDecimal="True" Minimum="0" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="产品数量:"/>
-            <!-- 使用自定义转换器和验证规则的数量输入框 -->
-            <TextBox Grid.Row="3" Grid.Column="1"
-                     Validation.ErrorTemplate="{StaticResource ValidationTemplate}"
-                     ToolTip="请输入有效的整数数值（大于等于0）">
+            <TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="产品数量:" />
+            <!--  使用自定义转换器和验证规则的数量输入框  -->
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="1"
+                ToolTip="请输入有效的整数数值（大于等于0）"
+                Validation.ErrorTemplate="{StaticResource ValidationTemplate}">
                 <TextBox.Text>
-                    <Binding Path="Quantity" 
-                             UpdateSourceTrigger="LostFocus"
-                             Converter="{StaticResource IntConverter}">
+                    <Binding
+                        Converter="{StaticResource IntConverter}"
+                        Path="Quantity"
+                        UpdateSourceTrigger="LostFocus">
                         <Binding.ValidationRules>
-                            <common:NumericValidationRule Minimum="0" AllowDecimal="False"/>
+                            <common:NumericValidationRule AllowDecimal="False" Minimum="0" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
 
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="产品描述:"/>
-            <TextBox Grid.Row="4" Grid.Column="1" 
-                     Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" AcceptsReturn="True" Height="60"/>
+            <TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Text="产品描述:" />
+            <TextBox
+                Grid.Row="4"
+                Grid.Column="1"
+                Height="60"
+                AcceptsReturn="True"
+                Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
 
-            <!-- 计算属性展示区域 -->
-            <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
-                    BorderBrush="LightGray" BorderThickness="1" Margin="0,15,0,15"
-                    Padding="15">
+            <!--  计算属性展示区域  -->
+            <Border
+                Grid.Row="5"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,15,0,15"
+                Padding="15"
+                BorderBrush="LightGray"
+                BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
-                               Text="计算属性（自动更新）" FontWeight="Bold" Margin="0,0,0,10"/>
-                    
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="格式化价格:"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FormattedPrice}" FontWeight="Bold"/>
-                    
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="总价值:"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TotalValue, StringFormat=￥{0:N2}}" FontWeight="Bold"/>
-                    
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="库存状态:"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" FontWeight="Bold">
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,0,10"
+                        FontWeight="Bold"
+                        Text="计算属性（自动更新）" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Text="格式化价格:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontWeight="Bold"
+                        Text="{Binding FormattedPrice}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="总价值:" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        FontWeight="Bold"
+                        Text="{Binding TotalValue, StringFormat=￥{0:N2}}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Text="库存状态:" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        FontWeight="Bold">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="缺货"/>
-                                <Setter Property="Foreground" Value="Red"/>
+                                <Setter Property="Text" Value="缺货" />
+                                <Setter Property="Foreground" Value="Red" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsInStock}" Value="True">
-                                        <Setter Property="Text" Value="有货"/>
-                                        <Setter Property="Foreground" Value="Green"/>
+                                        <Setter Property="Text" Value="有货" />
+                                        <Setter Property="Foreground" Value="Green" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -149,58 +214,96 @@
                 </Grid>
             </Border>
 
-            <!-- 高级 INotifyPropertyChanged 功能操作区域 -->
-            <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" 
-                       Text="INotifyPropertyChanged 高级功能演示" FontWeight="Bold" 
-                       Margin="0,0,0,10"/>
-            
-            <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" 
-                        Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="保存数据" Command="{Binding SaveCommand}"/>
-                <Button Content="重置数据" Command="{Binding ResetCommand}"/>
-                <Button Content="更新所有属性" Command="{Binding UpdateAllCommand}" 
-                        ToolTip="使用 OnAllPropertiesChanged() 一次性通知所有属性变化"/>
-                <Button Content="批量更新" Command="{Binding BatchUpdateCommand}" 
-                        ToolTip="演示批量更新模式，多个属性变化只触发一次通知"/>
-                <Button Content="延迟通知" Command="{Binding DelayUpdateCommand}" 
-                        ToolTip="演示延迟属性通知，快速连续更改同一属性只触发一次通知"/>
+            <!--  高级 INotifyPropertyChanged 功能操作区域  -->
+            <TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,10"
+                FontWeight="Bold"
+                Text="INotifyPropertyChanged 高级功能演示" />
+
+            <StackPanel
+                Grid.Row="7"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button Command="{Binding SaveCommand}" Content="保存数据" />
+                <Button Command="{Binding ResetCommand}" Content="重置数据" />
+                <Button
+                    Command="{Binding UpdateAllCommand}"
+                    Content="更新所有属性"
+                    ToolTip="使用 OnAllPropertiesChanged() 一次性通知所有属性变化" />
+                <Button
+                    Command="{Binding BatchUpdateCommand}"
+                    Content="批量更新"
+                    ToolTip="演示批量更新模式，多个属性变化只触发一次通知" />
+                <Button
+                    Command="{Binding DelayUpdateCommand}"
+                    Content="延迟通知"
+                    ToolTip="演示延迟属性通知，快速连续更改同一属性只触发一次通知" />
             </StackPanel>
 
-            <!-- 状态信息区域 -->
-            <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
-                    BorderBrush="LightGray" BorderThickness="1" Margin="0,15,0,0"
-                    Padding="15">
+            <!--  状态信息区域  -->
+            <Border
+                Grid.Row="8"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,15,0,0"
+                Padding="15"
+                BorderBrush="LightGray"
+                BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    
-                    <TextBlock Grid.Row="0" Text="操作状态:" FontWeight="Bold" Margin="0,0,0,5"/>
-                    <TextBlock Grid.Row="1" Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
-                    
-                    <!-- 忙碌指示器 -->
-                    <ProgressBar Grid.Row="1" IsIndeterminate="True" Height="5" Margin="0,25,0,0" 
-                                 Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisConverter}}"/>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Margin="0,0,0,5"
+                        FontWeight="Bold"
+                        Text="操作状态:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Text="{Binding StatusMessage}"
+                        TextWrapping="Wrap" />
+
+                    <!--  忙碌指示器 - 修改为更明显的样式  -->
+                    <ProgressBar
+                        Grid.Row="2"
+                        Height="15"
+                        Margin="0,10,0,0"
+                        Background="#FFEAEAEA"
+                        Foreground="#FF4578C0"
+                        IsIndeterminate="True"
+                        Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisConverter}}" />
                 </Grid>
             </Border>
-            
-            <!-- 帮助信息 -->
-            <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,15,0,0" 
-                       TextWrapping="Wrap" Opacity="0.7">
-                <Run Text="功能说明:" FontWeight="Bold"/>
-                <LineBreak/>
-                <Run Text="• 批量更新：同时修改多个属性，但只触发一次 PropertyChanged 事件"/>
-                <LineBreak/>
-                <Run Text="• 延迟通知：在快速连续修改同一属性时，只在最后一次修改触发通知"/>
-                <LineBreak/>
-                <Run Text="• OnPropertyChanging：在属性值变化前触发通知"/>
-                <LineBreak/>
-                <Run Text="• 相关属性：一个属性变化时自动通知相关联的其他属性变化"/>
-                <LineBreak/>
-                <Run Text="• 输入验证：价格和数量字段使用自定义验证规则确保输入有效"/>
-                <LineBreak/>
-                <Run Text="• 安全转换：使用自定义转换器避免输入无效字符时的异常"/>
+
+            <!--  帮助信息  -->
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,15,0,0"
+                Opacity="0.7"
+                TextWrapping="Wrap">
+                <Run FontWeight="Bold" Text="功能说明:" />
+                <LineBreak />
+                <Run Text="• 批量更新：同时修改多个属性，但只触发一次 PropertyChanged 事件" />
+                <LineBreak />
+                <Run Text="• 延迟通知：在快速连续修改同一属性时，只在最后一次修改触发通知" />
+                <LineBreak />
+                <Run Text="• OnPropertyChanging：在属性值变化前触发通知" />
+                <LineBreak />
+                <Run Text="• 相关属性：一个属性变化时自动通知相关联的其他属性变化" />
+                <LineBreak />
+                <Run Text="• 输入验证：价格和数量字段使用自定义验证规则确保输入有效" />
+                <LineBreak />
+                <Run Text="• 安全转换：使用自定义转换器避免输入无效字符时的异常" />
             </TextBlock>
         </Grid>
     </ScrollViewer>
