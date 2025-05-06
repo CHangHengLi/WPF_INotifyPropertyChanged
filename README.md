@@ -1,6 +1,7 @@
 # WPF MVVM INotifyPropertyChanged 示例
 
 这是一个基于.NET Core 8.0的WPF应用程序，展示了如何使用MVVM（Model-View-ViewModel）设计模式实现INotifyPropertyChanged接口，以实现UI与数据的双向绑定。
+![image](https://github.com/user-attachments/assets/f7c2ee91-9562-43fb-90d6-657971352e72)
 
 ## 项目结构
 
